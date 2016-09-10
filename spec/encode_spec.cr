@@ -17,6 +17,7 @@ describe HtmlUnicoder do
       <head><meta charset="windows-1251"></head>текст
     HTML
     HtmlUnicoder.new(page, ["Content-type: text/html; charset=UTF-8"]).to_s.should eq page
+    HtmlUnicoder.new(page, hh ["Content-type: text/html; charset=UTF-8"]).to_s.should eq page
   end
 
   it "supports old meta format" do
@@ -46,22 +47,27 @@ describe HtmlUnicoder do
     page = str(UInt8[245, 203, 210, 193, 167, 206, 211, 216, 203, 193, 32, 205, 207, 215, 193, 32, 206, 193, 204, 197, 214, 201, 212, 216, 32, 196, 207, 32, 166, 206, 196, 207, 164, 215, 210, 207, 208, 197, 202, 211, 216, 203, 207, 167, 32, 205, 207, 215, 206, 207, 167, 32, 210, 207, 196, 201, 206, 201])
     page_utf8 = "Українська мова належить до індоєвропейської мовної родини"
     HtmlUnicoder.new(page, ["Content-type: text/html; charset=KOI8-U"]).to_s.should eq page_utf8
+    HtmlUnicoder.new(page, hh ["Content-type: text/html; charset=KOI8-U"]).to_s.should eq page_utf8
   end
 
   it "supports encoding iso8859-1 (latin1)" do
     HtmlUnicoder.new(str(UInt8[114, 233, 115, 117, 109, 233]), ["Content-type: text/html; charset=iso8859-1"]).to_s.should eq "résumé"
+    HtmlUnicoder.new(str(UInt8[114, 233, 115, 117, 109, 233]), hh ["Content-type: text/html; charset=iso8859-1"]).to_s.should eq "résumé"
   end
 
   it "supports encoding windows-1252" do
     HtmlUnicoder.new(str(UInt8[114, 233, 115, 117, 109, 233]), ["Content-type: text/html; charset=windows-1252"]).to_s.should eq "résumé"
+    HtmlUnicoder.new(str(UInt8[114, 233, 115, 117, 109, 233]), hh ["Content-type: text/html; charset=windows-1252"]).to_s.should eq "résumé"
   end
 
   it "supports encoding tis-620" do
     HtmlUnicoder.new(str(UInt8[170, 232, 210, 167, 225, 205, 195, 236]), ["Content-type: text/html; charset=tis-620"]).to_s.should eq "ช่างแอร์"
+    HtmlUnicoder.new(str(UInt8[170, 232, 210, 167, 225, 205, 195, 236]), hh ["Content-type: text/html; charset=tis-620"]).to_s.should eq "ช่างแอร์"
   end
 
   it "supports encoding windows-874" do
     HtmlUnicoder.new(str(UInt8[188, 197, 161, 210, 195, 180, 211, 224, 185, 212, 185, 167, 210, 185]), ["Content-type: text/html; charset=windows-874"]).to_s.should eq "ผลการดำเนินงาน"
+    HtmlUnicoder.new(str(UInt8[188, 197, 161, 210, 195, 180, 211, 224, 185, 212, 185, 167, 210, 185]), hh ["Content-type: text/html; charset=windows-874"]).to_s.should eq "ผลการดำเนินงาน"
   end
 
   it "supports > in meta tag" do
@@ -113,6 +119,7 @@ describe HtmlUnicoder do
     HTML
     HtmlUnicoder.new(page, ["Content-Type: text/html; charset=_crap"]).to_s.should eq page
     HtmlUnicoder.new(page, ["Content-Type: text/html; charset=_crap"]).encoding.should eq({"UTF-8", :meta})
+    HtmlUnicoder.new(page, hh ["Content-Type: text/html; charset=_crap"]).encoding.should eq({"UTF-8", :meta})
   end
 
   it "supports 'charset=utf-8; dir=rtl' in meta" do
@@ -129,6 +136,7 @@ describe HtmlUnicoder do
     HTML
     HtmlUnicoder.new(page, ["Content-Type: text/html; charset=utf-8; dir=rtl"]).to_s.should eq page
     HtmlUnicoder.new(page, ["Content-Type: text/html; charset=utf-8; dir=rtl"]).encoding.should eq({"UTF-8", :headers})
+    HtmlUnicoder.new(page, hh ["Content-Type: text/html; charset=utf-8; dir=rtl"]).encoding.should eq({"UTF-8", :headers})
   end
 
   it "finds the right encoding in some arbitrary html" do

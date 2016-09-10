@@ -13,7 +13,7 @@ class HtmlUnicoder
   end
 
   # TODO: 
-  #   * add io as IO, headers as HTTP::Headers
+  #   * add io as IO
   #   * add @header : String? = nil
 
   def initialize(@io : String, @headers : Array(String) | HTTP::Headers | Nil = nil, @encoding : String? = nil)
