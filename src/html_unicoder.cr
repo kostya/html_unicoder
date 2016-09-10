@@ -14,7 +14,6 @@ class HtmlUnicoder
 
   # TODO: 
   #   * add io as IO
-  #   * add @header : String? = nil
 
   def initialize(@io : String, @headers : Array(String) | HTTP::Headers | Nil = nil, @encoding : String? = nil)
     @result_io = MemoryIO.new(@io)
