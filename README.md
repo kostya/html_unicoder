@@ -1,6 +1,13 @@
 # html_unicoder
 
-Convert incoming html page to unicode for Crystal language. Encoding parsed from http headers or meta tag. Encoding name normalized to use internal Crystal decoder. Correctly handle many edge cases, so result page should be safe utf-8 to use in Crystal.
+Convert incoming html page to utf-8 for Crystal language.
+
+## Features
+* Encoding name parsed from http headers
+* Encoding name parsed from page meta tag
+* Encoding name normalized to be used in internal Crystal decoder.
+* Correctly handle many edge cases
+* Result page should be safe utf-8 to use in Crystal
 
 ## Installation
 
