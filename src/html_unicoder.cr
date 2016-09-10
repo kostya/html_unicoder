@@ -1,7 +1,7 @@
 require "encoding_name"
 require "http/headers"
 
-class HtmlUnicoder
+struct HtmlUnicoder
   @@default_encoding : String?
 
   def self.default_encoding
