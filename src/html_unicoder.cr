@@ -86,10 +86,10 @@ struct HtmlUnicoder
   end
 
   private def unify_encoding(enc : String) : String?
-    EncodingName.new(enc, true).normalize
+    HtmlUnicoder.unify_encoding(enc)
   end
 
-  private def self.unify_encoding(enc : String) : String?
+  protected def self.unify_encoding(enc : String) : String?
     EncodingName.new(enc, true).normalize
   end
 
