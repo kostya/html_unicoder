@@ -85,7 +85,7 @@ describe HtmlUnicoder do
   end
 
   it "ignores bad characters" do
-    HtmlUnicoder.new(str(UInt8[116, 101, 115, 116, 242, 229, 241, 242, 116, 101, 115, 116]), 
+    HtmlUnicoder.new(str(UInt8[116, 101, 115, 116, 242, 229, 241, 242, 116, 101, 115, 116]),
       ["Content-type: text/html;charset=UTF-8"]).to_s.should eq "testtest"
   end
 
@@ -100,7 +100,7 @@ describe HtmlUnicoder do
   it "converts for fixture" do
     page = fixture("bad_encoding.html")
     HtmlUnicoder.new(page, ["Content-Type: text/html; charset=utf-8"]).to_s # should not raise
-    HtmlUnicoder.new(page).to_s # should not raise
+    HtmlUnicoder.new(page).to_s                                             # should not raise
   end
 
   it "picks the first correct encoding from meta" do
