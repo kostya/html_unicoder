@@ -1,0 +1,11 @@
+name: html_unicoder
+version: 0.1.0
+
+authors:
+  - Konstantin Makarchev <kostya27@gmail.com>
+
+dependencies:
+  encoding_name:
+    github: kostya/encoding_name
+    
+license: MIT
