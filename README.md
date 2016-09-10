@@ -1,6 +1,6 @@
 # html_unicoder
 
-TODO: Write a description here
+Convert incoming html page to unicode for Crystal language. Encoding correctly parsed from http headers or meta tag. Correctly handle many edge cases, so result page should be safe utf-8 to use in Crystal.
 
 ## Installation
 
@@ -10,7 +10,7 @@ Add this to your application's `shard.yml`:
 ```yaml
 dependencies:
   html_unicoder:
-    github: [your-github-name]/html_unicoder
+    github: kostya/html_unicoder
 ```
 
 
@@ -19,23 +19,17 @@ dependencies:
 
 ```crystal
 require "html_unicoder"
+
+# basic usage, encoding fetched only from meta tag, or use UTF-8//ignore, by default
+page = HtmlUnicoder.new(page).to_s
+
+# use headers Array(String)
+page = HtmlUnicoder.new(page, headers: ["Content-type: text/html; charset=Windows-1251"]).to_s
+
+# use custom encoding
+page = HtmlUnicoder.new(page, encoding: "CP1251").to_s
+
+# use custom encoding
+page = HtmlUnicoder.new(page, encoding: "CP1251").to_s
+
 ```
-
-
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
-
-## Contributing
-
-1. Fork it ( https://github.com/[your-github-name]/html_unicoder/fork )
-2. Create your feature branch (git checkout -b my-new-feature)
-3. Commit your changes (git commit -am 'Add some feature')
-4. Push to the branch (git push origin my-new-feature)
-5. Create a new Pull Request
-
-## Contributors
-
-- [[your-github-name]](https://github.com/[your-github-name]) Konstantin Makarchev - creator, maintainer

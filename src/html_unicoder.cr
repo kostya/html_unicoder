@@ -1,15 +1,6 @@
 require "encoding_name"
 # require "http/headers"
 
-# unicoder = HtmlUnicoder.new(page)
-# unicoder.io.gets_to_end
-
-# unicoder = HtmlUnicoder.new(page, headers: headers)
-# unicoder.io.gets_to_end
-
-# unicoder = HtmlUnicoder.new(page, encoding: "CP1251")
-# unicoder.io.gets_to_end
-
 class HtmlUnicoder
   @@default_encoding : String?
 
