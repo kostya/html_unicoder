@@ -36,7 +36,4 @@ page = HtmlUnicoder.new(page, headers: ["Content-type: text/html; charset=Window
 # use custom encoding
 page = HtmlUnicoder.new(page, encoding: "CP1251").to_s
 
-# use custom encoding
-page = HtmlUnicoder.new(page, encoding: "CP1251").to_s
-
 ```
