@@ -27,7 +27,7 @@ dependencies:
 ```crystal
 require "html_unicoder"
 
-# basic usage, encoding fetched only from meta tag, or use UTF-8//ignore, by default
+# basic usage, encoding only from meta tag, or use UTF-8//ignore, by default
 page = HtmlUnicoder.new(page).to_s
 
 # use headers Array(String)
@@ -35,5 +35,9 @@ page = HtmlUnicoder.new(page, headers: ["Content-type: text/html; charset=Window
 
 # use custom encoding
 page = HtmlUnicoder.new(page, encoding: "CP1251").to_s
+
+# set use default encoding
+HtmlUnicoder.default_encoding = "CP1251"
+page = HtmlUnicoder.new(page).to_s
 
 ```
