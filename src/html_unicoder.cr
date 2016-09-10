@@ -12,11 +12,15 @@ struct HtmlUnicoder
     @@default_encoding = unify_encoding(de)
   end
 
-  # TODO: 
-  #   * add io as IO
+  @io : IO
 
-  def initialize(@io : String, @headers : Array(String) | HTTP::Headers | Nil = nil, @encoding : String? = nil)
-    @result_io = MemoryIO.new(@io)
+  def initialize(io : String | IO, @headers : Array(String) | HTTP::Headers | Nil = nil, @encoding : String? = nil)
+    @external_io = io
+    @io = if io.is_a?(String)
+      MemoryIO.new(io)
+    else
+      io
+    end
   end
 
   @extracted_encoding : Tuple(String, Symbol)?
@@ -57,11 +61,26 @@ struct HtmlUnicoder
     end
 
     # find encoding in meta from page
-    encs = extract_from_meta(@io)
-    encs.each do |enc1|
-      if enc2 = unify_encoding(enc1)
-        return {enc2, :meta}
+
+    external_io = @external_io
+
+    if external_io.is_a?(String)
+      encs = extract_from_meta(external_io)
+      encs.each do |enc1|
+        if enc2 = unify_encoding(enc1)
+          return {enc2, :meta}
+        end
       end
+    else
+      # TODO: rewrite this not to read all, too slow
+      content = external_io.gets_to_end
+      encs = extract_from_meta(content)
+      @io = MemoryIO.new(content)
+      encs.each do |enc1|
+        if enc2 = unify_encoding(enc1)
+          return {enc2, :meta}
+        end
+      end    
     end
 
     # use default encoding
@@ -76,8 +95,9 @@ struct HtmlUnicoder
 
   # result io
   def io
-    io = @result_io
-    io.set_encoding(encoding[0], invalid: :skip)
+    enc = encoding[0]
+    io = @io
+    io.set_encoding(enc, invalid: :skip)
     io
   end
 

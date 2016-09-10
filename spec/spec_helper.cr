@@ -11,6 +11,10 @@ def fixture(name)
   File.read("#{__DIR__}/fixtures/#{name}")
 end
 
+def fixture_io(name)
+  File.open("#{__DIR__}/fixtures/#{name}", "r")
+end
+
 EMPTY = [] of String
 
 Spec.before_each do

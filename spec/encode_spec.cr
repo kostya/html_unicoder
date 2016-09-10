@@ -141,7 +141,9 @@ describe HtmlUnicoder do
 
   it "finds the right encoding in some arbitrary html" do
     page = fixture("bad_encoding2.html")
-    HtmlUnicoder.new(page).to_s.includes?("Груздовский карьер").should eq true
+    page = HtmlUnicoder.new(page).to_s
+    page.bytesize.should eq 99258
+    page.includes?("Груздовский карьер").should eq true
   end
 
   it "ignores bad characters" do
@@ -212,5 +214,28 @@ describe HtmlUnicoder do
   it "not crashed work when with binary files (zip)" do
     file = fixture("1.png.gz")
     HtmlUnicoder.new(file).encoding.should eq({"UTF-8", :default})
+  end
+
+  context "IO" do
+    it "finds the right encoding in some arbitrary html" do
+      page = fixture_io("bad_encoding2.html")
+      page = HtmlUnicoder.new(page).to_s
+      page.bytesize.should eq 99258
+      page.includes?("Груздовский карьер").should eq true
+    end
+
+    it "not crashed work when with binary files (png)" do
+      file = fixture_io("1.png")
+      HtmlUnicoder.new(file).encoding.should eq({"UTF-8", :default})
+    end
+
+    it "not crashed work when with binary files (zip)" do
+      file = fixture_io("1.png.gz")
+      HtmlUnicoder.new(file).encoding.should eq({"UTF-8", :default})
+    end
+
+    it "bug?" do
+      HtmlUnicoder.new(fixture_io("bug.html")).encoding.should eq({"WINDOWS-1252", :meta})
+    end
   end
 end

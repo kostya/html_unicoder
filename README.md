@@ -40,4 +40,11 @@ page = HtmlUnicoder.new(page, encoding: "CP1251").to_s
 HtmlUnicoder.default_encoding = "CP1251"
 page = HtmlUnicoder.new(page).to_s
 
+# with http client
+require "http/client"
+page = ""
+HTTP::Client.get("http://www.example.com") do |response|
+  page = HtmlUnicoder.new(response.body_io, response.headers).to_s
+end
+
 ```
