@@ -1,5 +1,5 @@
 require "encoding_name"
-# require "http/headers"
+require "http/headers"
 
 class HtmlUnicoder
   @@default_encoding : String?
@@ -16,7 +16,7 @@ class HtmlUnicoder
   #   * add io as IO, headers as HTTP::Headers
   #   * add @header : String? = nil
 
-  def initialize(@io : String, @headers : Array(String) | Nil = nil, @encoding : String? = nil)
+  def initialize(@io : String, @headers : Array(String) | HTTP::Headers | Nil = nil, @encoding : String? = nil)
     @result_io = MemoryIO.new(@io)
   end
 
@@ -36,10 +36,23 @@ class HtmlUnicoder
 
     # find encoding in header
     if headers = @headers
-      encs = extract_from_headers(headers)
-      encs.each do |enc1|
-        if enc2 = unify_encoding(enc1)
-          return {enc2, :headers}
+      if headers.is_a?(Array)
+        encs = extract_from_headers(headers)
+        encs.each do |enc1|
+          if enc2 = unify_encoding(enc1)
+            return {enc2, :headers}
+          end
+        end
+      else
+        if ct = headers["Content-Type"]?
+          if ct =~ HEADERS_REGX
+            encs = $1.to_s.split(';')
+            encs.each do |enc1|
+              if enc2 = unify_encoding(enc1)
+                return {enc2, :headers}
+              end
+            end
+          end
         end
       end
     end
@@ -84,6 +97,7 @@ class HtmlUnicoder
   HEADERS_REGX = %r{content-type:\s*.+?charset\s*=\s*["']?(.+?)["']?$}i
   META_REGX = %r{<meta([^>]*)>}mi
   CHARSET_REGX = %r{[^<]*charset=['"\s]?(.+?)([;'"\s>]|\z)}im
+  CHARSET_REGX2 = %r{charset\s*=\s*["']?(.+?)["']?}
 
   private def extract_from_headers(headers : Array(String))
     encodings = [] of String
