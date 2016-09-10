@@ -1,6 +1,6 @@
 # html_unicoder
 
-Convert incoming html page to utf-8 for Crystal language.
+Convert html page to utf-8 for Crystal language.
 
 ## Features
 * Encoding name parsed from http headers
