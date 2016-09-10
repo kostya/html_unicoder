@@ -45,7 +45,7 @@ class HtmlUnicoder
         end
       else
         if ct = headers["Content-Type"]?
-          if ct =~ HEADERS_REGX
+          if ct =~ CHARSET_REGX2
             encs = $1.to_s.split(';')
             encs.each do |enc1|
               if enc2 = unify_encoding(enc1)
@@ -97,7 +97,7 @@ class HtmlUnicoder
   HEADERS_REGX = %r{content-type:\s*.+?charset\s*=\s*["']?(.+?)["']?$}i
   META_REGX = %r{<meta([^>]*)>}mi
   CHARSET_REGX = %r{[^<]*charset=['"\s]?(.+?)([;'"\s>]|\z)}im
-  CHARSET_REGX2 = %r{charset\s*=\s*["']?(.+?)["']?}
+  CHARSET_REGX2 = %r{charset\s*=\s*["']?(.+?)["']?$}i
 
   private def extract_from_headers(headers : Array(String))
     encodings = [] of String

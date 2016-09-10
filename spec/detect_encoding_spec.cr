@@ -7,6 +7,11 @@ describe HtmlUnicoder do
       HtmlUnicoder.new("текст", ["Content-type: text/html; charset=utf-8"]).encoding.should eq({"UTF-8", :headers})
       HtmlUnicoder.new("текст", ["Content-type: text/html; charset=Windows-1251"]).encoding.should eq({"WINDOWS-1251", :headers})
       HtmlUnicoder.new("текст", ["Content-type: text/html; charset=koi8r"]).encoding.should eq({"KOI8-R", :headers})
+
+      HtmlUnicoder.new("текст", hh ["Content-type: text/html; charset=UTF-8"]).encoding.should eq({"UTF-8", :headers})
+      HtmlUnicoder.new("текст", hh ["Content-type: text/html; charset=utf-8"]).encoding.should eq({"UTF-8", :headers})
+      HtmlUnicoder.new("текст", hh ["content-type: text/html; charset=Windows-1251"]).encoding.should eq({"WINDOWS-1251", :headers})
+      HtmlUnicoder.new("текст", hh ["Content-type: text/html; charset=koi8r"]).encoding.should eq({"KOI8-R", :headers})
     end
 
     it "extract from meta" do
@@ -24,18 +29,22 @@ describe HtmlUnicoder do
       page = %{<head><meta charset="windows-1251"></head>текст}
       headers = ["Content-type: text/html; charset=UTF-8"]
       HtmlUnicoder.new(page, headers).encoding.should eq({"UTF-8", :headers})
+      HtmlUnicoder.new(page, hh headers).encoding.should eq({"UTF-8", :headers})
 
       page = %{<head><meta charset="utf-8"></head>текст}
       headers = ["Content-type: text/html; charset=windows-1251"]
       HtmlUnicoder.new(page, headers).encoding.should eq({"WINDOWS-1251", :headers})
+      HtmlUnicoder.new(page, hh headers).encoding.should eq({"WINDOWS-1251", :headers})
 
       page = %{<head><meta charset="us-ascii"></head>текст}
       headers = ["Content-type: text/html; charset=FUT-8"]
       HtmlUnicoder.new(page, headers).encoding.should eq({"US-ASCII", :meta})
+      HtmlUnicoder.new(page, hh headers).encoding.should eq({"US-ASCII", :meta})
 
       page = %{<head><meta charset="us-ascii"></head>текст}
       headers = ["Content-type: text/html; charset=FUT-8"]
       HtmlUnicoder.new(page, headers, encoding: "CP1251").encoding.should eq({"CP1251", :direct})
+      HtmlUnicoder.new(page, hh(headers), encoding: "CP1251").encoding.should eq({"CP1251", :direct})
     end
 
     it "extract hard encodings" do
@@ -43,6 +52,11 @@ describe HtmlUnicoder do
       HtmlUnicoder.new("текст", ["Content-type: text/html; charset=ANSI"]).encoding.should eq({"ISO-8859-1", :headers})
       HtmlUnicoder.new("текст", ["Content-type: text/html; charset=Windows-1251;ref"]).encoding.should eq({"WINDOWS-1251", :headers})
       HtmlUnicoder.new("текст", ["Content-type: text/html; charset=Windows-1251&ref"]).encoding.should eq({"WINDOWS-1251", :headers})
+
+      HtmlUnicoder.new("текст", hh ["Content-type: text/html; charset=Unicode"]).encoding.should eq({"UTF-8", :headers})
+      HtmlUnicoder.new("текст", hh ["Content-type: text/html; charset=ANSI"]).encoding.should eq({"ISO-8859-1", :headers})
+      HtmlUnicoder.new("текст", hh ["Content-type: text/html; charset=Windows-1251;ref"]).encoding.should eq({"WINDOWS-1251", :headers})
+      HtmlUnicoder.new("текст", hh ["Content-type: text/html; charset=Windows-1251&ref"]).encoding.should eq({"WINDOWS-1251", :headers})
     end
 
     context "default_encoding" do
