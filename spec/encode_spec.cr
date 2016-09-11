@@ -9,7 +9,7 @@ describe HtmlUnicoder do
     page = <<-HTML
       <head><meta charset="UTF-8"></head>текст
     HTML
-    HtmlUnicoder.new(page, EMPTY).to_s.should eq page
+    HtmlUnicoder.new(page).to_s.should eq page
   end
 
   it "overrides charset specified in meta with charset specified in header" do
@@ -24,19 +24,19 @@ describe HtmlUnicoder do
     page = <<-HTML
       <head><meta name="Content-type" content="text/html; charset=utf-8"></head>текст
     HTML
-    HtmlUnicoder.new(page, EMPTY).to_s.should eq page
+    HtmlUnicoder.new(page).to_s.should eq page
   end
 
   it "supports meta in bare document" do
     page = <<-HTML
       <meta http-equiv="Content-type" content="text/html; charset=utf-8">текст
     HTML
-    HtmlUnicoder.new(page, EMPTY).to_s.should eq page
+    HtmlUnicoder.new(page).to_s.should eq page
   end
 
   it "falls back to default_encoding(windows-1251) if no encoding is specified" do
     HtmlUnicoder.default_encoding = "CP1251"
-    HtmlUnicoder.new(str(UInt8[242, 229, 241, 242]), EMPTY).to_s.should eq "тест"
+    HtmlUnicoder.new(str(UInt8[242, 229, 241, 242])).to_s.should eq "тест"
   end
 
   it "supports encoding from koi8-r" do
@@ -74,14 +74,14 @@ describe HtmlUnicoder do
     page = <<-HTML
     <meta http-equiv="Content-type" content="text/html;> charset=utf-8">текст
     HTML
-    HtmlUnicoder.new(page, EMPTY).to_s.should eq page
+    HtmlUnicoder.new(page).to_s.should eq page
   end
 
   it "doesn't get confused with attributes of other tags" do
     page = <<-HTML
     <meta name="blah"> <script charset="utf8"></script>текст
     HTML
-    HtmlUnicoder.new(page, EMPTY).encoding.should eq(nil)
+    HtmlUnicoder.new(page).encoding.should eq(nil)
   end
 
   it "ignores bad characters" do
@@ -126,7 +126,7 @@ describe HtmlUnicoder do
     page = <<-HTML
       <meta http-equiv="Content-type" content="text/html; charset=utf-8; dir=rtl">текст
     HTML
-    HtmlUnicoder.new(page, EMPTY).to_s.should eq page
+    HtmlUnicoder.new(page).to_s.should eq page
     HtmlUnicoder.new(page).encoding.should eq({"UTF-8", :meta})
   end
 
@@ -191,7 +191,7 @@ describe HtmlUnicoder do
       </head>
       <body> текст </body> </html>
     TXT
-    HtmlUnicoder.new(page, EMPTY).to_s.should eq page
+    HtmlUnicoder.new(page).to_s.should eq page
     HtmlUnicoder.new(page).encoding.should eq({"UTF-8", :meta})
   end
 

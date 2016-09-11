@@ -16,13 +16,13 @@ describe HtmlUnicoder do
 
     it "extract from meta" do
       page = %{<head><meta charset="windows-1251"></head>текст}
-      HtmlUnicoder.new(page, EMPTY).encoding.should eq({"WINDOWS-1251", :meta})
+      HtmlUnicoder.new(page).encoding.should eq({"WINDOWS-1251", :meta})
 
       page = %{<head><meta charset="utf8"></head>текст}
-      HtmlUnicoder.new(page, EMPTY).encoding.should eq({"UTF8", :meta})
+      HtmlUnicoder.new(page).encoding.should eq({"UTF8", :meta})
 
       page = %{<head><meta charset=koi8r></head>текст}
-      HtmlUnicoder.new(page, EMPTY).encoding.should eq({"KOI8-R", :meta})
+      HtmlUnicoder.new(page).encoding.should eq({"KOI8-R", :meta})
     end
 
     it "extract from both" do
@@ -61,17 +61,17 @@ describe HtmlUnicoder do
 
     context "default_encoding" do
       it "when even not set default, is UTF-8" do
-        HtmlUnicoder.new("текст", EMPTY).encoding.should eq(nil)
+        HtmlUnicoder.new("текст").encoding.should eq(nil)
       end
 
       it "set default" do
         HtmlUnicoder.default_encoding = "CP1251"
-        HtmlUnicoder.new("текст", EMPTY).encoding.should eq({"CP1251", :default})
+        HtmlUnicoder.new("текст").encoding.should eq({"CP1251", :default})
       end
 
       it "set default incorrectly" do
         HtmlUnicoder.default_encoding = "asdfadsf"
-        HtmlUnicoder.new("текст", EMPTY).encoding.should eq(nil)
+        HtmlUnicoder.new("текст").encoding.should eq(nil)
       end
     end
 
