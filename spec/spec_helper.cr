@@ -2,6 +2,11 @@ require "spec"
 require "../src/html_unicoder"
 require "base64"
 require "http"
+require "crypto/md5"
+
+def md5(str)
+  Crypto::MD5.hex_digest(str)
+end
 
 def str(array)
   String.new(array.to_unsafe, array.size)
