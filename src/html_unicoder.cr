@@ -13,7 +13,7 @@ struct HtmlUnicoder
   CONTENT_TYPE     = "Content-Type"
 
   def self.default_encoding
-    @@default_encoding ||= DEFAULT_ENCODING
+    @@default_encoding
   end
 
   def self.default_encoding=(de : String)
@@ -110,20 +110,19 @@ struct HtmlUnicoder
     if enc = HtmlUnicoder.default_encoding
       return {enc, :default}
     end
-
-    # last crazy impossible case,
-    #   when default encoding was not set correctly
-    {DEFAULT_ENCODING, :default}
   end
 
   BUFFER_SIZE = 6 * 1024
 
   # result io
   def io
-    enc = encoding[0]
-    io = @io
-    io.set_encoding(enc, invalid: :skip)
-    io
+    if enc = encoding
+      io = @io
+      io.set_encoding(enc[0], invalid: :skip)
+      io
+    else
+      @io
+    end
   end
 
   @result : String?

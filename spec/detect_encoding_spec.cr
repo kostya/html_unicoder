@@ -61,7 +61,7 @@ describe HtmlUnicoder do
 
     context "default_encoding" do
       it "when even not set default, is UTF-8" do
-        HtmlUnicoder.new("текст", EMPTY).encoding.should eq({"UTF-8", :default})
+        HtmlUnicoder.new("текст", EMPTY).encoding.should eq(nil)
       end
 
       it "set default" do
@@ -71,7 +71,7 @@ describe HtmlUnicoder do
 
       it "set default incorrectly" do
         HtmlUnicoder.default_encoding = "asdfadsf"
-        HtmlUnicoder.new("текст", EMPTY).encoding.should eq({"UTF-8", :default})
+        HtmlUnicoder.new("текст", EMPTY).encoding.should eq(nil)
       end
     end
 

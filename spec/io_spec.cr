@@ -9,6 +9,7 @@ describe HtmlUnicoder do
             tag = "<meta charset=utf8>"
             str = "a" * header_size + tag + "b" * body_size
             io = MemoryIO.new(str)
+            HtmlUnicoder.default_encoding = "UTF-8"
             u = HtmlUnicoder.new(io)
             if header_size > HtmlUnicoder::BUFFER_SIZE + tag.size
               u.encoding.should eq({"UTF-8", :default})
@@ -24,6 +25,7 @@ describe HtmlUnicoder do
             tag = "<meta charset=cp-1251>" + str(UInt8[242, 229, 234, 241, 242])
             str = "a" * header_size + tag + "b" * body_size
             io = MemoryIO.new(str)
+            HtmlUnicoder.default_encoding = "UTF-8"
             u = HtmlUnicoder.new(io)
             page = u.to_s
             if header_size > HtmlUnicoder::BUFFER_SIZE + tag.size
@@ -41,6 +43,7 @@ describe HtmlUnicoder do
             tag = "<meta charset=cp-1251>" + str(UInt8[242, 229, 234, 241, 242])
             str = "a" * header_size + tag + "b" * body_size
             io = SimpleMemoryIO.new(str)
+            HtmlUnicoder.default_encoding = "UTF-8"
             u = HtmlUnicoder.new(io)
             page = u.to_s
             if header_size > HtmlUnicoder::BUFFER_SIZE + tag.size
@@ -59,6 +62,7 @@ describe HtmlUnicoder do
           it "no encoding" do
             tag = "<meta charset=utf8>"
             str = "a" * header_size + tag + "b" * body_size
+            HtmlUnicoder.default_encoding = "UTF-8"
             u = HtmlUnicoder.new(str)
             u.encoding.should eq({"UTF8", :meta})
             page = u.to_s
@@ -69,6 +73,7 @@ describe HtmlUnicoder do
           it "from cp1251" do
             tag = "<meta charset=cp-1251>" + str(UInt8[242, 229, 234, 241, 242])
             str = "a" * header_size + tag + "b" * body_size
+            HtmlUnicoder.default_encoding = "UTF-8"
             u = HtmlUnicoder.new(str)
             page = u.to_s
             u.encoding.should eq({"CP1251", :meta})
@@ -79,6 +84,7 @@ describe HtmlUnicoder do
           it "without_buffered, from cp1251" do
             tag = "<meta charset=cp-1251>" + str(UInt8[242, 229, 234, 241, 242])
             str = "a" * header_size + tag + "b" * body_size
+            HtmlUnicoder.default_encoding = "UTF-8"
             u = HtmlUnicoder.new(str)
             page = u.to_s
             u.encoding.should eq({"CP1251", :meta})

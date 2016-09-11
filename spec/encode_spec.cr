@@ -81,7 +81,7 @@ describe HtmlUnicoder do
     page = <<-HTML
     <meta name="blah"> <script charset="utf8"></script>текст
     HTML
-    HtmlUnicoder.new(page, EMPTY).encoding.should eq({"UTF-8", :default})
+    HtmlUnicoder.new(page, EMPTY).encoding.should eq(nil)
   end
 
   it "ignores bad characters" do
@@ -196,10 +196,12 @@ describe HtmlUnicoder do
   end
 
   it "convert from bad missing encoding" do
+    HtmlUnicoder.default_encoding = "UTF-8"
     HtmlUnicoder.new(Base64.decode_string("ey8qx+Tl8fwg7+Dw4Ozl8vD7IOLo5+jy4CovfQ==")).to_s.should eq "{/*  */}"
   end
 
   it "convert double times" do
+    HtmlUnicoder.default_encoding = "UTF-8"
     str = HtmlUnicoder.new(Base64.decode_string("ey8qx+Tl8fwg7+Dw4Ozl8vD7IOLo5+jy4CovfQ==")).to_s
     str.should eq "{/*  */}"
     str = HtmlUnicoder.new(str).to_s
@@ -208,12 +210,12 @@ describe HtmlUnicoder do
 
   it "not crashed work when with binary files (png)" do
     file = fixture("1.png")
-    HtmlUnicoder.new(file).encoding.should eq({"UTF-8", :default})
+    HtmlUnicoder.new(file).encoding.should eq(nil)
   end
 
   it "not crashed work when with binary files (zip)" do
     file = fixture("1.png.gz")
-    HtmlUnicoder.new(file).encoding.should eq({"UTF-8", :default})
+    HtmlUnicoder.new(file).encoding.should eq(nil)
   end
 
   context "IO" do
@@ -226,12 +228,12 @@ describe HtmlUnicoder do
 
     it "not crashed work when with binary files (png)" do
       file = fixture_io("1.png")
-      HtmlUnicoder.new(file).encoding.should eq({"UTF-8", :default})
+      HtmlUnicoder.new(file).encoding.should eq(nil)
     end
 
     it "not crashed work when with binary files (zip)" do
       file = fixture_io("1.png.gz")
-      HtmlUnicoder.new(file).encoding.should eq({"UTF-8", :default})
+      HtmlUnicoder.new(file).encoding.should eq(nil)
     end
 
     it "bug?" do
