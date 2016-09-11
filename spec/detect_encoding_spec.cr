@@ -74,5 +74,21 @@ describe HtmlUnicoder do
         HtmlUnicoder.new("текст", EMPTY).encoding.should eq({"UTF-8", :default})
       end
     end
+
+    context "#default_encoding" do
+      it "set ok" do
+        HtmlUnicoder.new("", default_encoding: "CP1251").encoding.should eq({"CP1251", :default})
+      end
+
+      it "set is before class default" do
+        HtmlUnicoder.default_encoding = "CP1251"
+        HtmlUnicoder.new("", default_encoding: "CP1254").encoding.should eq({"CP1254", :default})
+      end
+
+      it "set default incorrectly" do
+        HtmlUnicoder.default_encoding = "CP1251"
+        HtmlUnicoder.new("", default_encoding: "asdfsdf").encoding.should eq({"CP1251", :default})
+      end
+    end
   end
 end

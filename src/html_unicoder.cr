@@ -22,7 +22,7 @@ struct HtmlUnicoder
 
   @io : IO
 
-  def initialize(io : String | IO, @headers : Array(String) | HTTP::Headers | Nil = nil, @encoding : String? = nil)
+  def initialize(io : String | IO, @headers : Array(String) | HTTP::Headers | Nil = nil, @encoding : String? = nil, @default_encoding : String? = nil)
     @external_io = io
     @io = if io.is_a?(String)
             MemoryIO.new(io)
@@ -99,6 +99,11 @@ struct HtmlUnicoder
           return {enc2, :meta}
         end
       end
+    end
+
+    # use default encoding
+    if (enc = @default_encoding) && (enc2 = unify_encoding(enc))
+      return {enc2, :default}
     end
 
     # use default encoding
