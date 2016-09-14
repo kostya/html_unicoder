@@ -50,4 +50,11 @@ end
 
 # io -> io
 io = HtmlUnicoder.new(io).io
+
+# streaming http client body_io
+#   steps to find encoding
+#   1) finding encoding in headers
+#   2) finding encoding in response.body meta tag
+#   3) consider io as CP1251
+body_io = HtmlUnicoder.new(response.body_io, response.headers, default_encoding: "CP1251").io
 ```
