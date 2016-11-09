@@ -141,7 +141,9 @@ describe HtmlUnicoder do
 
   it "finds the right encoding in some arbitrary html" do
     page = fixture("bad_encoding2.html")
-    page = HtmlUnicoder.new(page).to_s
+    u = HtmlUnicoder.new(page)
+    u.encoding.should eq({"WINDOWS-1251", :meta})
+    page = u.to_s
     page.bytesize.should eq 99258
     page.includes?("Груздовский карьер").should eq true
   end
