@@ -29,12 +29,19 @@ struct HtmlUnicoder
           else
             io
           end
+    @extracted_encoding_flag = false
   end
 
   @extracted_encoding : Tuple(String, Symbol)?
+  @extracted_encoding_flag : Bool
 
   def encoding
-    @extracted_encoding ||= extract_encoding
+    if @extracted_encoding_flag
+      @extracted_encoding
+    else
+      @extracted_encoding_flag = true
+      @extracted_encoding = extract_encoding
+    end
   end
 
   # extract encoding from data
@@ -79,20 +86,13 @@ struct HtmlUnicoder
         end
       end
     else
-      new_io = if external_io.is_a?(IO::Buffered)
-                 external_io
-               else
-                 Buffer.new(external_io)
-               end
       buf = uninitialized UInt8[BUFFER_SIZE]
       slice = buf.to_slice
-
-      size = new_io.read(slice)
+      size = external_io.read(slice)
       head = String.new(slice.to_unsafe, size)
       encs = extract_from_meta(head)
-      new_io.rewind_buffer(size)
 
-      @io = new_io
+      @io = HtmlUnicoder::IOWrapper.new(head.to_slice, external_io)
 
       encs.each do |enc1|
         if enc2 = unify_encoding(enc1)

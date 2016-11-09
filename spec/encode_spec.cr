@@ -232,14 +232,16 @@ describe HtmlUnicoder do
 
     it "not crashed work when with binary files (png)" do
       file = fixture_io("1.png")
-      HtmlUnicoder.new(file).encoding.should eq(nil)
-      md5(HtmlUnicoder.new(file).to_s).should eq md5(fixture("1.png"))
+      u = HtmlUnicoder.new(file)
+      u.encoding.should eq(nil)
+      md5(u.to_s).should eq md5(fixture("1.png"))
     end
 
     it "not crashed work when with binary files (zip)" do
       file = fixture_io("1.png.gz")
-      HtmlUnicoder.new(file).encoding.should eq(nil)
-      md5(HtmlUnicoder.new(file).to_s).should eq md5(fixture("1.png.gz"))
+      u = HtmlUnicoder.new(file)
+      u.encoding.should eq(nil)
+      md5(u.to_s).should eq md5(fixture("1.png.gz"))
     end
 
     it "bug?" do
