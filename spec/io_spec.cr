@@ -8,7 +8,7 @@ describe HtmlUnicoder do
           it "no encoding" do
             tag = "<meta charset=utf8>"
             str = "a" * header_size + tag + "b" * body_size
-            io = MemoryIO.new(str)
+            io = IO::Memory.new(str)
             HtmlUnicoder.default_encoding = "UTF-8"
             u = HtmlUnicoder.new(io)
             if header_size > HtmlUnicoder::BUFFER_SIZE + tag.size
@@ -24,7 +24,7 @@ describe HtmlUnicoder do
           it "from cp1251" do
             tag = "<meta charset=cp-1251>" + str(UInt8[242, 229, 234, 241, 242])
             str = "a" * header_size + tag + "b" * body_size
-            io = MemoryIO.new(str)
+            io = IO::Memory.new(str)
             HtmlUnicoder.default_encoding = "UTF-8"
             u = HtmlUnicoder.new(io)
             page = u.to_s
@@ -42,7 +42,7 @@ describe HtmlUnicoder do
           it "without_buffered, from cp1251" do
             tag = "<meta charset=cp-1251>" + str(UInt8[242, 229, 234, 241, 242])
             str = "a" * header_size + tag + "b" * body_size
-            io = SimpleMemoryIO.new(str)
+            io = SimpleIO::Memory.new(str)
             HtmlUnicoder.default_encoding = "UTF-8"
             u = HtmlUnicoder.new(io)
             page = u.to_s

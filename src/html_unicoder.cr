@@ -25,7 +25,7 @@ struct HtmlUnicoder
   def initialize(io : String | IO, @headers : Array(String) | HTTP::Headers | Nil = nil, @encoding : String? = nil, @default_encoding : String? = nil)
     @external_io = io
     @io = if io.is_a?(String)
-            MemoryIO.new(io)
+            IO::Memory.new(io)
           else
             io
           end

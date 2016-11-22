@@ -3,7 +3,7 @@ class HtmlUnicoder::IOWrapper
 
   def initialize(head : Bytes, @remained : IO)
     @head = true
-    @mio = MemoryIO.new(head)
+    @mio = IO::Memory.new(head)
   end
 
   def read(slice : Slice(UInt8))
