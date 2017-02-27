@@ -2,10 +2,10 @@ require "spec"
 require "../src/html_unicoder"
 require "base64"
 require "http"
-require "crypto/md5"
+require "digest/md5"
 
 def md5(str)
-  Crypto::MD5.hex_digest(str)
+  Digest::MD5.hexdigest(str)
 end
 
 def str(array)
