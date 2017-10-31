@@ -38,8 +38,7 @@ end
 # This is a non-optimized version of IO::Memory so we can test
 # raw IO. Optimizations for specific IOs are tested separately
 # (for example in buffered_io_spec)
-class SimpleIO::Memory
-  include IO
+class SimpleIO::Memory < IO
 
   getter buffer : UInt8*
   getter bytesize : Int32

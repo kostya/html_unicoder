@@ -1,6 +1,4 @@
-class HtmlUnicoder::IOWrapper
-  include IO
-
+class HtmlUnicoder::IOWrapper < IO
   def initialize(head : Bytes, @remained : IO)
     @head = true
     @mio = IO::Memory.new(head)
