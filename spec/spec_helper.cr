@@ -39,7 +39,6 @@ end
 # raw IO. Optimizations for specific IOs are tested separately
 # (for example in buffered_io_spec)
 class SimpleIO::Memory < IO
-
   getter buffer : UInt8*
   getter bytesize : Int32
   @capacity : Int32
