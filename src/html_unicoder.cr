@@ -22,7 +22,11 @@ struct HtmlUnicoder
 
   @io : IO
 
-  def initialize(io : String | IO, @headers : Array(String) | HTTP::Headers | Nil = nil, @encoding : String? = nil, @default_encoding : String? = nil)
+  def initialize(io : String | IO,
+                 @headers : Array(String) | HTTP::Headers | Nil = nil,
+                 @encoding : String? = nil,
+                 @default_encoding : String? = nil,
+                 @content_type : String? = nil)
     @external_io = io
     @io = if io.is_a?(String)
             IO::Memory.new(io)
@@ -49,6 +53,18 @@ struct HtmlUnicoder
     # find encoding in param
     if (enc1 = @encoding) && (enc2 = unify_encoding(enc1))
       return {enc2, :direct}
+    end
+
+    # extract from content_type
+    if ct = @content_type
+      if ct =~ CHARSET_REGX2
+        encs = $1.to_s.split(';')
+        encs.each do |enc1|
+          if enc2 = unify_encoding(enc1)
+            return {enc2, :content_type}
+          end
+        end
+      end
     end
 
     # find encoding in header

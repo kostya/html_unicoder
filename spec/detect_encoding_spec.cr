@@ -14,6 +14,13 @@ describe HtmlUnicoder do
       HtmlUnicoder.new("текст", hh ["Content-type: text/html; charset=koi8r"]).encoding.should eq({"KOI8-R", :headers})
     end
 
+    it "extract from content_type" do
+      HtmlUnicoder.new("текст", content_type: "text/html; charset=UTF-8").encoding.should eq({"UTF-8", :content_type})
+      HtmlUnicoder.new("текст", content_type: "text/html; charset=utf-8").encoding.should eq({"UTF-8", :content_type})
+      HtmlUnicoder.new("текст", content_type: "text/html; charset=Windows-1251").encoding.should eq({"WINDOWS-1251", :content_type})
+      HtmlUnicoder.new("текст", content_type: "text/html; charset=koi8r").encoding.should eq({"KOI8-R", :content_type})
+    end
+
     it "extract from meta" do
       page = %{<head><meta charset="windows-1251"></head>текст}
       HtmlUnicoder.new(page).encoding.should eq({"WINDOWS-1251", :meta})
@@ -57,6 +64,11 @@ describe HtmlUnicoder do
       HtmlUnicoder.new("текст", hh ["Content-type: text/html; charset=ANSI"]).encoding.should eq({"ISO-8859-1", :headers})
       HtmlUnicoder.new("текст", hh ["Content-type: text/html; charset=Windows-1251;ref"]).encoding.should eq({"WINDOWS-1251", :headers})
       HtmlUnicoder.new("текст", hh ["Content-type: text/html; charset=Windows-1251&ref"]).encoding.should eq({"WINDOWS-1251", :headers})
+
+      HtmlUnicoder.new("текст", content_type: "text/html; charset=Unicode").encoding.should eq({"UTF-8", :content_type})
+      HtmlUnicoder.new("текст", content_type: "text/html; charset=ANSI").encoding.should eq({"ISO-8859-1", :content_type})
+      HtmlUnicoder.new("текст", content_type: "text/html; charset=Windows-1251;ref").encoding.should eq({"WINDOWS-1251", :content_type})
+      HtmlUnicoder.new("текст", content_type: "text/html; charset=Windows-1251&ref").encoding.should eq({"WINDOWS-1251", :content_type})
     end
 
     it "big content" do
